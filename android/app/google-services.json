@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "913559733031",
+    "project_id": "dietlist-e7aa3",
+    "storage_bucket": "dietlist-e7aa3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:913559733031:android:e86a6c34a448271459df02",
+        "android_client_info": {
+          "package_name": "com.dietfriend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "913559733031-ie5jc404aq9s7v92ph4hi07dq3dt9a4v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAb7sRKbneZOzTZoR_D5dVS5ppr4Y4gFag"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "913559733031-ie5jc404aq9s7v92ph4hi07dq3dt9a4v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
