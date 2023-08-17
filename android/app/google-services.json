@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:913559733031:android:e86a6c34a448271459df02",
+        "mobilesdk_app_id": "1:913559733031:android:e31266d44a98423559df02",
         "android_client_info": {
-          "package_name": "com.dietfriend"
+          "package_name": "com.dietfriends"
         }
       },
       "oauth_client": [
@@ -29,6 +29,13 @@
             {
               "client_id": "913559733031-ie5jc404aq9s7v92ph4hi07dq3dt9a4v.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "913559733031-29984d34a580korav6cnr8fpk32seg9i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dietFriend"
+              }
             }
           ]
         }
