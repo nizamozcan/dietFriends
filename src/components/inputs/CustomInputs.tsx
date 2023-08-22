@@ -6,8 +6,11 @@ type Props = {
   inputStyle?: ViewStyle,
   placeholder?:string,
   onChange?:any,
-  onFocus?:()=>void
-  onBlur?:()=>void
+  onFocus?:()=>void,
+  onBlur?:()=>void,
+  value?:string,
+  multiline?:boolean,
+  disabled?:boolean
 };
 export const CustomInputs=(props:Props)=>{
   return(
@@ -20,8 +23,9 @@ export const CustomInputs=(props:Props)=>{
       onChangeText={props.onChange}
       onFocus={props.onFocus}
       onBlur={props.onBlur}
-
-
+      value={props.value}
+      multiline={props.multiline}
+      editable={props.disabled ? false : true}
     />  )
 }
 const styles=StyleSheet.create({

@@ -4,7 +4,6 @@ import { Colors } from "../../assets/colors/Colors";
 import { Styles } from "../../assets/styles/Styles";
 
 export const CustomButton=({text,buttonStyle,onPress}:{text:string,buttonStyle?:ViewStyle,onPress:()=>void})=>{
-  console.log(buttonStyle)
   return(
     <TouchableOpacity style={{ ...Styles.buttonDefault, ...buttonStyle }} onPress={onPress}>
       <Text style={buttonStyle?.backgroundColor == "white" ? {
