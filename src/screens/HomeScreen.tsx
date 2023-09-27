@@ -1,109 +1,85 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View, Button, SafeAreaView, Alert, FlatList } from "react-native";
-import { Colors } from "../assets/colors/Colors";
+import React, {useEffect, useState} from "react";
+import {StyleSheet, Text, TouchableOpacity, View, Button, SafeAreaView, Alert, FlatList, Image} from "react-native";
+import {Colors} from "../assets/colors/Colors";
 import Modal from "react-native-modal";
-import { CustomInputs } from "../components/inputs/CustomInputs";
-import { CustomButton } from "../components/buttons/CustomButton";
+import {CustomInputs} from "../components/inputs/CustomInputs";
+import {CustomButton} from "../components/buttons/CustomButton";
 import database from "@react-native-firebase/database";
 import auth from "@react-native-firebase/auth";
 import FormatData from "../Formats/FormatData";
+import {useNavigation} from "@react-navigation/native";
+import {Header} from "../components/headers/Header";
+import Icon from 'react-native-vector-icons/Ionicons';
+import {MainView} from "../components/cards/MainView";
 
 const HomeScreen = (props) => {
-  const [data, setData] = useState([]);
-  const [isModalVisible, setModalVisible] = useState(false);
-  const [title, setTitle] = useState("");
-  const [value, setValue] = useState("");
-  const [displayName, setDisplayName] = useState("");
+    const navigation = useNavigation();
+    const [data, setData] = useState([]);
 
-  const sendData = async () => {
-    const uid = auth().currentUser?.uid;
-    const data = {
-      title: title,
-      value: value,
-      uid: uid,
-      displayName: displayName,
-      date: (new Date()).toISOString()
+    const [displayName, setDisplayName] = useState("");
+
+
+    useEffect(() => {
+       getData();
+    }, []);
+    const getData = async () => {
+        database()
+            .ref("/userData")
+            .once("value")
+            .then(snapshot => {
+                const dataFormat = FormatData(snapshot.val());
+                setData(dataFormat);
+            });
     };
-    const response = await database().ref("/userData").push(data);
-    setModalVisible(false);
 
-  };
-  useEffect(() => {
-    getData();
-  }, []);
-  const getData = async () => {
-    database()
-      .ref("/userData")
-      .once("value")
-      .then(snapshot => {
-        const dataFormat = FormatData(snapshot.val());
-        setData(dataFormat);
-      });
-  };
-  const createList = () => {
-    const user = auth().currentUser?.displayName;
-    console.log(user);
-    if (user == null || user == "") {
-      Alert.alert("Lütfen Önce Ayarlar Bölümünden Adınızı Düzenleyiniz");
-    } else {
-      setModalVisible(true);
-      setDisplayName(user);
-
-    }
-  };
-  const renderItem = ({ item }) => {
-    console.log(item);
+    const renderItem = ({item}) => {
+        console.log(item);
+        console.log(item)
+        return (
+            <TouchableOpacity
+                style={{minHeight: 300, backgroundColor: '#75c9b7',elevation: 5,marginVertical:8, borderRadius: 16,padding:8}}
+                onPress={() => navigation.navigate("DietDetail", {data: item})}>
+                <View style={{flex: 0.1, flexDirection: 'row'}}>
+                    <Image source={require('../assets/icons/male_man_people_person_avatar_white_tone_icon_159363.png')}
+                           style={{height: 30, width: 30}}/>
+                    <Text style={{fontWeight: "600", paddingLeft: 16,color:'black'}}>
+                        {item.displayName}
+                    </Text>
+                </View>
+                <View style={{flex:1}}>
+                    <Text style={{flex: 4, marginTop: 10,color:'black'}}>
+                        {item.title}
+                        {item.value}
+                    </Text>
+                </View>
+                <View style={{backgroundColor:'black',height:1,width:'100%'}}></View>
+                <Icon name="heart-outline" size={30} color="grey" style={{padding:4}}/>
+            </TouchableOpacity>
+        );
+    };
     return (
-      <TouchableOpacity style={{ minHeight: 300, backgroundColor: "white", borderRadius: 20, margin: 10, padding: 10 }}>
-        <Text style={{ alignSelf: "center", fontWeight: "600", flex: 0.2 }}>
-          {item.title}
-        </Text>
-        <View style={{ width: "100%", borderWidth: 0.5 }}></View>
-        <Text style={{ flex: 4, marginTop: 10 }}>
-          {item.value}
-        </Text>
-        <Text style={{ flex: 0.5, alignSelf: "flex-end" }}>
-          {item.displayName}
-        </Text>
-      </TouchableOpacity>
+        <MainView title={"Diyetler"}>
+            <FlatList data={data} renderItem={renderItem}/>
+            <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate("AddDiet")}><Text
+                style={{
+                    fontSize: 40,
+                    fontWeight: "300",
+                    alignSelf: "center",
+                    color: "white"
+                }}>+</Text></TouchableOpacity>
+        </MainView>
     );
-  };
-  return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "lightBlue" }}>
-      <FlatList data={data} renderItem={renderItem} />
-      <Modal isVisible={isModalVisible}
-             coverScreen={true}
-             swipeDirection="left"
-             style={{ backgroundColor: Colors.Green, marginTop: 50, borderRadius: 25, padding: 20 }}
-      >
-        <View style={{ flex: 1 }}>
-          <Text style={{ color: "white" }}>Uygulamış olduğunuz diyeti paylaşın</Text>
-          <CustomInputs placeholder={"Diyetin Adı"} onChange={(x: string) => setTitle(x)} />
-          <CustomInputs placeholder={"Diyetinizi Kısaca Açıklayınız"} multiline={true} inputStyle={{ height: "75%" }}
-                        onChange={(x: string) => setValue(x)} />
-          <View style={{ flexDirection: "row" }}>
-            <CustomButton text={"Kapat"} buttonStyle={{ flex: 1, borderWidth: 2, borderColor: "white" }}
-                          onPress={() => setModalVisible(false)} />
-            <CustomButton text={"Paylaş"} buttonStyle={{ backgroundColor: "white", flex: 1 }} onPress={sendData} />
-          </View>
-
-        </View>
-      </Modal>
-      <TouchableOpacity style={styles.buttonStyle} onPress={createList}><Text
-        style={{ fontSize: 40, fontWeight: "300", alignSelf: "center", color: "white" }}>+</Text></TouchableOpacity>
-    </SafeAreaView>
-  );
 };
 export default HomeScreen;
 const styles = StyleSheet.create({
-  buttonStyle: {
-    position: "absolute",
-    right: 10,
-    bottom: 10,
-    backgroundColor: Colors.Green,
-    width: 75,
-    height: 75,
-    justifyContent: "center",
-    borderRadius: 75
-  }
+    buttonStyle: {
+        position: "absolute",
+        right: 10,
+        bottom: 10,
+        backgroundColor: Colors.Green,
+        width: 75,
+        height: 75,
+        justifyContent: "center",
+        borderRadius: 75
+    }
 });
