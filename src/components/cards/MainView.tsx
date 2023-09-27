@@ -10,13 +10,13 @@ interface Props {
 export const MainView = (props: Props) => {
     const {children, title} = props
     return (
-        <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+        <SafeAreaView style={{flex: 1, backgroundColor: '#F9EDD9'}}>
             <ImageBackground
                 source={require('../../assets/icons/iconLogo.jpg')}
                 style={styles.background}
             >
+                <Header title={title}/>
                 <View style={{flex: 1, padding: 16}}>
-                    <Header title={title}/>
                     {children}
                 </View>
 

@@ -16,6 +16,7 @@ export const CustomInputs=(props:Props)=>{
   return(
     <TextInput
       {...props}
+
       autoCapitalize={"none"}
       placeholder={props.placeholder}
       placeholderTextColor={'grey'}
@@ -24,8 +25,8 @@ export const CustomInputs=(props:Props)=>{
       onFocus={props.onFocus}
       onBlur={props.onBlur}
       value={props.value}
-      multiline={props.multiline}
-      editable={props.disabled ? false : true}
+      //multiline = {true}
+      numberOfLines = {10}      editable={props.disabled ? false : true}
     />  )
 }
 const styles=StyleSheet.create({
@@ -37,7 +38,8 @@ const styles=StyleSheet.create({
     backgroundColor: "white",
     height: 60,
     color: "black",
+    borderWidth:0.5,
     padding: 10,
-    marginTop: 10
+    marginTop: 10,
   },
 })

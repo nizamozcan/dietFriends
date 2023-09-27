@@ -11,16 +11,15 @@ import {useNavigation} from "@react-navigation/native";
 import {Header} from "../components/headers/Header";
 import Icon from 'react-native-vector-icons/Ionicons';
 import {MainView} from "../components/cards/MainView";
+import {Split} from "../components/split/Split";
 
 const HomeScreen = (props) => {
     const navigation = useNavigation();
     const [data, setData] = useState([]);
 
-    const [displayName, setDisplayName] = useState("");
-
 
     useEffect(() => {
-       getData();
+        getData();
     }, []);
     const getData = async () => {
         database()
@@ -33,28 +32,38 @@ const HomeScreen = (props) => {
     };
 
     const renderItem = ({item}) => {
-        console.log(item);
-        console.log(item)
         return (
-            <TouchableOpacity
-                style={{minHeight: 300, backgroundColor: '#75c9b7',elevation: 5,marginVertical:8, borderRadius: 16,padding:8}}
-                onPress={() => navigation.navigate("DietDetail", {data: item})}>
-                <View style={{flex: 0.1, flexDirection: 'row'}}>
-                    <Image source={require('../assets/icons/male_man_people_person_avatar_white_tone_icon_159363.png')}
-                           style={{height: 30, width: 30}}/>
-                    <Text style={{fontWeight: "600", paddingLeft: 16,color:'black'}}>
-                        {item.displayName}
-                    </Text>
-                </View>
-                <View style={{flex:1}}>
-                    <Text style={{flex: 4, marginTop: 10,color:'black'}}>
-                        {item.title}
-                        {item.value}
-                    </Text>
-                </View>
-                <View style={{backgroundColor:'black',height:1,width:'100%'}}></View>
-                <Icon name="heart-outline" size={30} color="grey" style={{padding:4}}/>
-            </TouchableOpacity>
+            <View style={{
+                minHeight: 300,
+                backgroundColor: 'white',
+                borderColor: '#78633f',
+                borderWidth: 0.5,
+                elevation: 5,
+                marginVertical: 8,
+                borderRadius: 16,
+                padding: 8
+            }}
+            >
+                <TouchableOpacity style={{flex: 1}}
+                                  onPress={() => navigation.navigate("DietDetail", {data: item})}>
+                    <View style={{flex: 0.1, flexDirection: 'row'}}>
+                        <Image
+                            source={require('../assets/icons/male_man_people_person_avatar_white_tone_icon_159363.png')}
+                            style={{height: 30, width: 30}}/>
+                        <Text style={{fontWeight: "600", paddingLeft: 16, color: '#513400'}}>
+                            {item.displayName}
+                        </Text>
+                    </View>
+                    <View style={{flex: 1}}>
+                        <Text style={{flex: 4, marginTop: 10, color: '#513400'}}>
+                            {item.title}
+                            {item.value}
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+
+            </View>
+
         );
     };
     return (
