@@ -58,6 +58,10 @@ PODS:
   - hermes-engine/Pre-built (0.72.4)
   - leveldb-library (1.22.2)
   - libevent (2.1.12)
+  - lottie-ios (4.3.3)
+  - lottie-react-native (6.3.1):
+    - lottie-ios (~> 4.3.0)
+    - React-Core
   - PromisesObjC (2.3.1)
   - RCT-Folly (2021.07.22.00):
     - boost
@@ -504,6 +508,7 @@ DEPENDENCIES:
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
   - libevent (~> 2.1.12)
+  - lottie-react-native (from `../node_modules/lottie-react-native`)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -561,6 +566,7 @@ SPEC REPOS:
     - GTMSessionFetcher
     - leveldb-library
     - libevent
+    - lottie-ios
     - PromisesObjC
     - RecaptchaInterop
     - SocketRocket
@@ -579,6 +585,8 @@ EXTERNAL SOURCES:
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2023-08-07-RNv0.72.4-813b2def12bc9df02654b3e3653ae4a68d0572e0
+  lottie-react-native:
+    :path: "../node_modules/lottie-react-native"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -681,6 +689,8 @@ SPEC CHECKSUMS:
   hermes-engine: 81191603c4eaa01f5e4ae5737a9efcf64756c7b2
   leveldb-library: f03246171cce0484482ec291f88b6d563699ee06
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
+  lottie-ios: 25e7b2675dad5c3ddad369ac9baab03560c5bfdd
+  lottie-react-native: 4b72b72c69301e022f1434ed533ed0e01aa3416f
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
   RCTRequired: c0569ecc035894e4a68baecb30fe6a7ea6e399f9
@@ -697,7 +707,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: c7f826e40fa9cab5d37cab6130b1af237332b594
   React-jsinspector: aaed4cf551c4a1c98092436518c2d267b13a673f
   React-logger: da1ebe05ae06eb6db4b162202faeafac4b435e77
-  react-native-safe-area-context: 7aa8e6d9d0f3100a820efb1a98af68aa747f9284
+  react-native-safe-area-context: 5afd8138cecdaabe464bc641df684ac33382b4a1
   React-NativeModulesApple: 7f86478e94eb29d497f3811ed17a907138e5a233
   React-perflogger: 496a1a3dc6737f964107cb3ddae7f9e265ddda58
   React-RCTActionSheet: 02904b932b50e680f4e26e7a686b33ebf7ef3c00
@@ -716,8 +726,8 @@ SPEC CHECKSUMS:
   React-utils: f6df92ce301b6636655d979b0e00d48a4d3d0c5b
   ReactCommon: 22ea38c7bc59e1fa853ac9caae3ddfb0d3c06a36
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
-  RNCAsyncStorage: c913ede1fa163a71cea118ed4670bbaaa4b511bb
-  RNCCheckbox: 75255b03e604bbcc26411eb31c4cbe3e3865f538
+  RNCAsyncStorage: 99ccc5d8a0acd7ec3b2663c50aa812ad8bb2f3e1
+  RNCCheckbox: 6d53cdd9e002f01b567f5c9d59662e3517651326
   RNFBApp: af276a038f2e1488d59920697bba97b43f83164c
   RNFBAuth: 1131e53d88468b275af7e7253198d6b94d4c9c89
   RNFBDatabase: c381b5f523cf87da3f2b6f95c05d04848acddd84

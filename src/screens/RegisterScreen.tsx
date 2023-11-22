@@ -6,6 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import auth, { firebase } from "@react-native-firebase/auth";
 import updateProfile from "@react-native-firebase/auth";
 import getAuth from "@react-native-firebase/auth";
+import firestore from "@react-native-firebase/firestore";
 
 
 
@@ -15,13 +16,19 @@ const RegisterScreen = () => {
   const [isVisibleTxt, setIsVisible] = useState(false);
   const navigation = useNavigation();
   const registerUser = async () => {
-    auth().createUserWithEmailAndPassword(mail, password).then(x => {
-      console.log(x)
 
-      Alert.alert("Başarılı Kayıt");
-      let data = mail + " " + password;
-      navigation.navigate("Login", { datas: data });
-    }).catch(x => console.log(x));
+    firestore()
+        .collection('users')
+        .add({
+          name: 'Ada Lovelace',
+          surname: "deneme",
+          email:mail,
+          password:password,
+          token:''
+        })
+        .then(() => {
+          navigation.navigate("Login")
+        }).catch(()=>Alert.alert("Lütfen Tekrar Deneyiniz"))
   };
   return (
     <View style={{ margin: 10 }}>

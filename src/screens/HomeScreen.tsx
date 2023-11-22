@@ -1,74 +1,40 @@
 import React, {useEffect, useState} from "react";
-import {StyleSheet, Text, TouchableOpacity, View, Button, SafeAreaView, Alert, FlatList, Image} from "react-native";
+import {StyleSheet, Text, TouchableOpacity, View, FlatList, Image, TextInput} from "react-native";
 import {Colors} from "../assets/colors/Colors";
-import Modal from "react-native-modal";
-import {CustomInputs} from "../components/inputs/CustomInputs";
-import {CustomButton} from "../components/buttons/CustomButton";
 import database from "@react-native-firebase/database";
-import auth from "@react-native-firebase/auth";
 import FormatData from "../Formats/FormatData";
 import {useNavigation} from "@react-navigation/native";
-import {Header} from "../components/headers/Header";
-import Icon from 'react-native-vector-icons/Ionicons';
 import {MainView} from "../components/cards/MainView";
-import {Split} from "../components/split/Split";
+import {Animation} from "../components/cards/Animation";
+import {DietListCard} from "../components/cards/DietListCard";
 
 const HomeScreen = (props) => {
+    const [filteretText, setfilteretText] = useState("")
     const navigation = useNavigation();
     const [data, setData] = useState([]);
-
+    const [headerVisible, setHeaderVisible] = useState(false)
+    const [loading,setLoading]=useState(true)
 
     useEffect(() => {
         getData();
     }, []);
     const getData = async () => {
-        database()
-            .ref("/userData")
-            .once("value")
-            .then(snapshot => {
-                const dataFormat = FormatData(snapshot.val());
-                setData(dataFormat);
-            });
+
     };
+    const filter = (item) => {
 
+    }
     const renderItem = ({item}) => {
+
         return (
-            <View style={{
-                minHeight: 300,
-                backgroundColor: 'white',
-                borderColor: '#78633f',
-                borderWidth: 0.5,
-                elevation: 5,
-                marginVertical: 8,
-                borderRadius: 16,
-                padding: 8
-            }}
-            >
-                <TouchableOpacity style={{flex: 1}}
-                                  onPress={() => navigation.navigate("DietDetail", {data: item})}>
-                    <View style={{flex: 0.1, flexDirection: 'row'}}>
-                        <Image
-                            source={require('../assets/icons/male_man_people_person_avatar_white_tone_icon_159363.png')}
-                            style={{height: 30, width: 30}}/>
-                        <Text style={{fontWeight: "600", paddingLeft: 16, color: '#513400'}}>
-                            {item.displayName}
-                        </Text>
-                    </View>
-                    <View style={{flex: 1}}>
-                        <Text style={{flex: 4, marginTop: 10, color: '#513400'}}>
-                            {item.title}
-                            {item.value}
-                        </Text>
-                    </View>
-                </TouchableOpacity>
-
-            </View>
-
+            <DietListCard displayName={item.displayName} title={item.title} loading={loading} value={item.value} uid={item.uid}/>
         );
     };
+
     return (
-        <MainView title={"Diyetler"}>
-            <FlatList data={data} renderItem={renderItem}/>
+        <MainView title={""} noBack={true}  settingsNavigation={()=>navigation.navigate("Setting")}>
+
+            <FlatList data={data} renderItem={renderItem} />
             <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate("AddDiet")}><Text
                 style={{
                     fontSize: 40,
@@ -85,7 +51,7 @@ const styles = StyleSheet.create({
         position: "absolute",
         right: 10,
         bottom: 10,
-        backgroundColor: Colors.Green,
+        backgroundColor: 'grey',
         width: 75,
         height: 75,
         justifyContent: "center",

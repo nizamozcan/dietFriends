@@ -1,32 +1,38 @@
 import React from "react";
 import {SafeAreaView, ImageBackground, StyleSheet, View} from "react-native";
 import {Header} from "../headers/Header";
+import {Header2} from "../headers/Header2";
+import {useSelector} from "react-redux";
+import {RootState} from "@reduxjs/toolkit/query";
 
 interface Props {
-    children: any;
-    title: string;
+    children?: any;
+    title?: string;
+    noBack?: boolean;
+    onPressHeader?: () => void;
+    noHeader?: boolean
+    settingsNavigation?: () => void;
+    noSettingsImage?: boolean
 }
 
 export const MainView = (props: Props) => {
-    const {children, title} = props
-    return (
-        <SafeAreaView style={{flex: 1, backgroundColor: '#F9EDD9'}}>
-            <ImageBackground
-                source={require('../../assets/icons/iconLogo.jpg')}
-                style={styles.background}
-            >
-                <Header title={title}/>
-                <View style={{flex: 1, padding: 16}}>
-                    {children}
-                </View>
+    const {children, title, noBack, noSettingsImage, settingsNavigation, onPressHeader} = props
 
-            </ImageBackground>
+    return (
+        <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+
+            {props.noHeader == true ? null :
+                <Header2 noSettingsImage={noSettingsImage} settingsNavigation={settingsNavigation} title={title}
+                         noBack={noBack} navigation={onPressHeader}/>}
+            <View style={{flex: 1, paddingHorizontal: 16,paddingBottom:4}}>
+                {children}
+            </View>
         </SafeAreaView>
     );
 }
 const styles = StyleSheet.create({
     background: {
         flex: 1,
-        resizeMode: 'cover', // Arka plan resmini kaplamasını sağlar
+        resizeMode: 'center', // Arka plan resmini kaplamasını sağlar
     }
 });

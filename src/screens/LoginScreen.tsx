@@ -11,20 +11,35 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {Colors} from "../assets/colors/Colors";
 import Modal from "react-native-modal";
 import LottieView from "lottie-react-native";
+import firestore from '@react-native-firebase/firestore';
+import {LoginUserControl} from "../helpers/Helpers";
+import {AlertModal} from "../components/modals/AlertModal";
+import {CustomAlerts} from "../components/modals/Alerts";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "@reduxjs/toolkit/query";
+import {setUserInfo} from "../redux/Slice";
 
 const LoginScreen = (props) => {
+    const dispatch = useDispatch()
     let navigateData = props?.route?.params?.datas?.split(" ");
-
     const [toggleCheckBox, setToggleCheckBox] = useState(false);
     const [mail, setMail] = useState(navigateData != undefined ? navigateData[0] : "");
     const [password, setPassword] = useState(navigateData != undefined ? navigateData[1] : "");
     const [isVisible, setIsVisible] = useState(false)
     const navigation = useNavigation();
     const [animation, setAnimation] = useState(false)
+    const {userInfo} = useSelector((state: RootState) => state.user);
+    console.log(userInfo)
     useEffect(() => {
         getData();
-    }, []);
 
+    }, []);
+    const getFirestoreUser = async () => {
+        const usersCollection = await firestore().collection('users').get()
+        console.log("usersCollection")
+        console.log(usersCollection)
+
+    }
     const getData = async () => {
         const isLogin = await auth().currentUser
         if (isLogin != null) {
@@ -40,46 +55,39 @@ const LoginScreen = (props) => {
 
         }
     };
-    const signUser = () => {
-        setIsVisible(true)
-        setTimeout(() => {
-            setIsVisible(false)
-        }, 3000)
-        if (toggleCheckBox == true) {
-            let mailAndPassword = mail + " " + password;
-            AsyncStorage.setItem("loginInfo", mailAndPassword);
-        }
-        auth().signInWithEmailAndPassword(mail, password)
-            .then((x) => {
-                setAnimation(true)
-                AsyncStorage.setItem("userUID", x.user.uid);
-                navigation.navigate("Home", {user: x.user});
-            })
-            .catch(error => setAnimation(false));
-    };
+
+    const signUser = async () => {
+        LoginUserControl(mail, password).then((x) => {
+            const userInfo =
+                {
+                    name: x._data.name,
+                    surname: x._data.surname,
+                    mail: x._data.email,
+                    password: x._data.password,
+                    userId:x._ref._documentPath._parts[1]
+                }
+            dispatch(setUserInfo(
+                {
+                    userMail: x._data.email,
+                    userSurname: x._data.surname,
+                    userName: x._data.name,
+                    userPassword: x._data.password,
+                    userId:x._ref._documentPath._parts[1]
+                }))
+            AsyncStorage.setItem("userInfo", JSON.stringify(userInfo))
+            navigation.navigate("Home");
+        }).catch((y) => CustomAlerts("Başarısız İşlem", "Mail yada şifrenizi kontrol ediniz."))
+
+    }
+
     return (
         <View style={{margin: 10}}>
             <ScrollView>
-                <Modal isVisible={isVisible} coverScreen={true}>
-                    <View style={{height: 200, backgroundColor: 'lightgrey',borderRadius:20}}>
-                        {animation == true ?
-                            <LottieView source={require('../assets/animation/animation_ln1n0o25.json')} autoPlay loop
-                                        style={{width: 100, height: 100}}/> :
-                            <View style={{padding:16,flex:1,alignItems:'center'}}>
-                                <LottieView source={require('../assets/animation/animation_ln1n39i1.json')} autoPlay loop
-                                            style={{width: 100, height: 100}}/>
-                                <Text style={{color:'black',fontWeight:'bold'}}>Giriş Bilgileri Hatalı</Text>
-                            </View>
-                        }
-                    </View>
-                </Modal>
-
-
                 <Image source={require("../assets/icons/iconLogo.jpg")}
                        style={{width: "100%", height: 400, marginTop: -10}}
                        resizeMode={"contain"}/>
 
-                <CustomInputs placeholder={"Mail Giriniz"} inputStyle={{marginTop: 0}}
+                <CustomInputs placeholder={"Mail Giriniz"}
                               onChange={(x: any) => setMail(x)}
                               value={mail}/>
                 <CustomInputs placeholder={"Şifre Giriniz"}
@@ -95,7 +103,6 @@ const LoginScreen = (props) => {
                         onCheckColor={Colors.Green}
                         tintColor={Colors.Green}
                         lineWidth={1}
-
                     />
                 </View>
                 <CustomButton text={"Giriş Yap"} onPress={() => signUser()}/>

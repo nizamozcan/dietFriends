@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { StyleSheet, Keyboard,Text, TextInput, TextInputProps, View, ViewStyle } from "react-native";
 
 
@@ -10,24 +10,30 @@ type Props = {
   onBlur?:()=>void,
   value?:string,
   multiline?:boolean,
-  disabled?:boolean
+  disabled?:boolean,
+  keyboardType?:string,
 };
 export const CustomInputs=(props:Props)=>{
   return(
-    <TextInput
-      {...props}
-
-      autoCapitalize={"none"}
-      placeholder={props.placeholder}
-      placeholderTextColor={'grey'}
-      style={{...styles.inputStyle, ...props.inputStyle}}
-      onChangeText={props.onChange}
-      onFocus={props.onFocus}
-      onBlur={props.onBlur}
-      value={props.value}
-      //multiline = {true}
-      numberOfLines = {10}      editable={props.disabled ? false : true}
-    />  )
+       <View style={{marginTop:8}}>
+         <Text style={{marginBottom:-4}}>{props.placeholder}</Text>
+         <TextInput
+             {...props}
+             autoCapitalize={"none"}
+             placeholder={props.placeholder}
+             placeholderTextColor={'grey'}
+             style={{...styles.inputStyle, ...props.inputStyle}}
+             onChangeText={props.onChange}
+             onFocus={props.onFocus}
+             keyboardType={props.keyboardType=="number"?'numeric':"default"}
+             onBlur={props.onBlur}
+             value={props.value}
+             //multiline = {true}
+             numberOfLines = {10}
+             editable={props.disabled ? false : true}
+         />
+       </View>
+    )
 }
 const styles=StyleSheet.create({
   inputStyle: {
