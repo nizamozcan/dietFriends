@@ -15,7 +15,6 @@ interface Props {
 
 export const Header2 = (props: Props) => {
     const {userInfo} = useSelector((state: RootState) => state.user);
-    console.log(userInfo)
     return (
         <SafeAreaView style={{
             flexDirection: 'row',

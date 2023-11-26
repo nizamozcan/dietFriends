@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
-import {Alert, Animated, Image, ScrollView, Text, View} from "react-native";
+import {Alert, Animated, Image, PermissionsAndroid, ScrollView, Text, View} from "react-native";
 import LoginCard from "../components/cards/LoginCard";
 import {CustomButton} from "../components/buttons/CustomButton";
 import {CustomInputs} from "../components/inputs/CustomInputs";
@@ -18,6 +18,7 @@ import {CustomAlerts} from "../components/modals/Alerts";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@reduxjs/toolkit/query";
 import {setUserInfo} from "../redux/Slice";
+import messaging from "@react-native-firebase/messaging";
 
 const LoginScreen = (props) => {
     const dispatch = useDispatch()
@@ -29,16 +30,13 @@ const LoginScreen = (props) => {
     const navigation = useNavigation();
     const [animation, setAnimation] = useState(false)
     const {userInfo} = useSelector((state: RootState) => state.user);
-    console.log(userInfo)
     useEffect(() => {
+        PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
         getData();
-
     }, []);
+
     const getFirestoreUser = async () => {
         const usersCollection = await firestore().collection('users').get()
-        console.log("usersCollection")
-        console.log(usersCollection)
-
     }
     const getData = async () => {
         const isLogin = await auth().currentUser
@@ -57,6 +55,7 @@ const LoginScreen = (props) => {
     };
 
     const signUser = async () => {
+        const token = await messaging().getToken();
         LoginUserControl(mail, password).then((x) => {
             const userInfo =
                 {
@@ -64,7 +63,8 @@ const LoginScreen = (props) => {
                     surname: x._data.surname,
                     mail: x._data.email,
                     password: x._data.password,
-                    userId:x._ref._documentPath._parts[1]
+                    userId:x._ref._documentPath._parts[1],
+                    token:token
                 }
             dispatch(setUserInfo(
                 {
@@ -72,7 +72,8 @@ const LoginScreen = (props) => {
                     userSurname: x._data.surname,
                     userName: x._data.name,
                     userPassword: x._data.password,
-                    userId:x._ref._documentPath._parts[1]
+                    userId:x._ref._documentPath._parts[1],
+                    userToken:token
                 }))
             AsyncStorage.setItem("userInfo", JSON.stringify(userInfo))
             navigation.navigate("Home");

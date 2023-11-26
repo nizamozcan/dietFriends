@@ -8,7 +8,6 @@ interface Props{
     value?:string
 }
 export const AlertModal=(props:Props)=>{
-    console.log("asd")
 const {type,title,value}=props
     return(
        <Modal visible={true} transparent       animationType="slide"

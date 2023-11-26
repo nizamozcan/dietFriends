@@ -16,7 +16,7 @@ type Props = {
 export const CustomInputs=(props:Props)=>{
   return(
        <View style={{marginTop:8}}>
-         <Text style={{marginBottom:-4}}>{props.placeholder}</Text>
+         <Text style={{marginBottom:-4,color:'orange'}}>{props.placeholder}</Text>
          <TextInput
              {...props}
              autoCapitalize={"none"}
@@ -45,6 +45,7 @@ const styles=StyleSheet.create({
     height: 60,
     color: "black",
     borderWidth:0.5,
+    borderColor:'grey',
     padding: 10,
     marginTop: 10,
   },

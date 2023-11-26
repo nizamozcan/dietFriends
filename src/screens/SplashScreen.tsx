@@ -19,7 +19,15 @@ export const SplashScreen=()=>{
         const mail=data.mail
         const password=data.password
        LoginUserControl(mail,password).then((x)=>{
-           dispatch(setUserInfo({userName:x._data.name,userSurname:x._data.surname,userMail:x._data.email,userPassword:x._data.password}))
+           dispatch(setUserInfo(
+               {
+                   userName: x._data.name,
+                   userSurname: x._data.surname,
+                   userMail: x._data.email,
+                   userPassword: x._data.password,
+                   userId:x._ref._documentPath._parts[1],
+                   userToken:data.token
+               }))
            navigation.navigate("Home")
        }).catch(()=>navigation.navigate("Login"))
     }

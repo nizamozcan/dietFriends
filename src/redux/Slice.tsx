@@ -6,6 +6,7 @@ interface UserInfo{
     userMail?:string
     userPassword?:string
     userId?:string
+    userToken:string
 
 }
 const messageSlice = createSlice({
@@ -16,7 +17,8 @@ const messageSlice = createSlice({
             userSurname: "",
             userMail: "",
             userPassword:"",
-            userId:""
+            userId:"",
+            userToken:""
         },
 
     },

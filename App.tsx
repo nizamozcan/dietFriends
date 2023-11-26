@@ -5,7 +5,7 @@
  * @format
  */
 
-import React from "react";
+import React, {useEffect} from "react";
 import {
     SafeAreaView,
     StyleSheet, View
@@ -24,12 +24,15 @@ import {MyDietListScreen} from "./src/screens/MyDietListScreen";
 import {Provider} from "react-redux";
 import {store} from "./src/redux/Store";
 import {SplashScreen} from "./src/screens/SplashScreen";
-
+import {PermissionsAndroid} from 'react-native';
+import messaging from '@react-native-firebase/messaging';
 
 function App(): JSX.Element {
 
     const Stack = createNativeStackNavigator();
     const Tab = createBottomTabNavigator();
+
+
     const StackNavigator = () => {
         return (
             <Stack.Navigator>

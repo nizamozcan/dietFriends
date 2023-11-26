@@ -50,7 +50,6 @@ export const DietListDetailScreen = (props) => {
     }
 
     const renderItem = ({item}:{item:any}) => {
-        console.log(item.text)
         return (
 
             <View style={{minHeight: 80, backgroundColor: 'white', marginVertical: 8, borderRadius: 20, padding: 8}}>

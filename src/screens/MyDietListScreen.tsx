@@ -25,7 +25,6 @@ export const MyDietListScreen = () => {
 
     }
     const renderItem=({item})=>{
-        console.log(item)
         return(
             <View style={{backgroundColor:'black'}}>
                 <Text>

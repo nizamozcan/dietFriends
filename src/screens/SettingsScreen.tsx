@@ -13,7 +13,6 @@ import firestore from "@react-native-firebase/firestore";
 const SettingsScreen = () => {
     const dispatch = useDispatch()
     const {userInfo} = useSelector(state => state.user)
-    console.log(userInfo)
     const navigation = useNavigation();
     const [data, setData] = useState("");
     const [name, setName] = useState(userInfo.userName);
@@ -25,7 +24,6 @@ const SettingsScreen = () => {
     }, []);
 
     const updateData = async () => {
-      console.log(userInfo.userId)
         await firestore().collection("users").doc(userInfo.userId).update({
         name:name,
         password:password,

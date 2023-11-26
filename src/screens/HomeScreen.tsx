@@ -7,34 +7,28 @@ import {useNavigation} from "@react-navigation/native";
 import {MainView} from "../components/cards/MainView";
 import {Animation} from "../components/cards/Animation";
 import {DietListCard} from "../components/cards/DietListCard";
+import {getHomeData} from "../actions/Firestore";
 
 const HomeScreen = (props) => {
-    const [filteretText, setfilteretText] = useState("")
     const navigation = useNavigation();
     const [data, setData] = useState([]);
-    const [headerVisible, setHeaderVisible] = useState(false)
-    const [loading,setLoading]=useState(true)
 
     useEffect(() => {
         getData();
     }, []);
     const getData = async () => {
-
+        const firebaseData=await getHomeData()
+        setData(firebaseData?._docs)
     };
-    const filter = (item) => {
 
-    }
-    const renderItem = ({item}) => {
+    const renderItem = ({item}:{item:object}) => {
+    return <DietListCard data={item._data}/>
 
-        return (
-            <DietListCard displayName={item.displayName} title={item.title} loading={loading} value={item.value} uid={item.uid}/>
-        );
     };
 
     return (
-        <MainView title={""} noBack={true}  settingsNavigation={()=>navigation.navigate("Setting")}>
-
-            <FlatList data={data} renderItem={renderItem} />
+        <MainView title={""}  noBack={true}  settingsNavigation={()=>navigation.navigate("Setting")}>
+            <FlatList data={data} renderItem={renderItem} showsVerticalScrollIndicator={false}/>
             <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate("AddDiet")}><Text
                 style={{
                     fontSize: 40,
