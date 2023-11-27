@@ -27,7 +27,7 @@ const HomeScreen = (props) => {
     };
 
     return (
-        <MainView title={""}  noBack={true}  settingsNavigation={()=>navigation.navigate("Setting")}>
+        <MainView bodyStyle={{paddingHorizontal:0}} title={""}  noBack={true}  settingsNavigation={()=>navigation.navigate("Setting")}>
             <FlatList data={data} renderItem={renderItem} showsVerticalScrollIndicator={false}/>
             <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate("AddDiet")}><Text
                 style={{

@@ -17,7 +17,7 @@ export const RegisterUser=async(name:string,surname:string,email:string,password
 export const sendDietList=async(title:string,value:string,day:number,positiveComment:string,rating:number,disadvantage:string,userInfo?:object)=>{
     const date = firebase.firestore.Timestamp.fromDate(new Date());
     const formatDate = date.toDate();
-    await firestore().collection("dietLists").add({
+   return await firestore().collection("dietLists").add({
         positiveComment:positiveComment,
         disadvantage:disadvantage,
         name:title,
@@ -26,7 +26,7 @@ export const sendDietList=async(title:string,value:string,day:number,positiveCom
         rating:rating,
         createDate:formatDate,
         userInfo:userInfo
-    })
+    }).then((x)=>{return Promise.resolve(x)}).catch(()=>{return Promise.reject()})
 }
 export const getHomeData=async()=>{
     const data=await firestore().collection("dietLists").get()

@@ -8,7 +8,7 @@ export const DietListCard = ({data}: { data: IGetHomeData }) => {
             <View style={{flexDirection:'row'}}>
                 <Image source={require('../../assets/icons/noImage.png')}
                        style={{height: 30, width: 30, borderRadius: 30}}/>
-                <Text style={{textAlign: 'center',flex:1, fontWeight: 'bold', fontSize: 18}}></Text>
+                <Text style={{paddingLeft:16,fontWeight: 'bold', fontSize: 18}}>{data?.userInfo?.userName}</Text>
             </View>
         </View>
     )
@@ -16,7 +16,7 @@ export const DietListCard = ({data}: { data: IGetHomeData }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        height: 300,
+        height: 500,
         backgroundColor: '#F7F7F3',
         marginVertical: 8,
         borderRadius: 8,

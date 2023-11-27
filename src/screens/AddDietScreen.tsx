@@ -30,7 +30,7 @@ export const AddDietScreen = () => {
     })
     const sendData = async () => {
 
-        sendDietList(
+       await sendDietList(
             datas.title,
             datas.value,
             datas.day,
@@ -38,10 +38,12 @@ export const AddDietScreen = () => {
             rating,
             datas.disadvantage,
             userInfo)
-            .then(() => navigation.navigate("Home"))
+            .then((x) => {
+                console.log("x get data")
+                console.log(x)
+                //navigation.navigate("Home")
+            })
             .catch(() => Alert.alert("Boş alanları doldurunuz"))
-
-
     };
 
     return (
