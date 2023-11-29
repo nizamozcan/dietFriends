@@ -33,3 +33,7 @@ export const getHomeData=async()=>{
     if(data)
     return data
 }
+export const updateUser=async(userId:string,data:object)=>{
+    const response=await firestore().collection("users").doc(userId).update(data)
+    return data
+}

@@ -19,6 +19,7 @@ export interface IDate{
     seconds?:string
 }
 export interface IUsers{
+    userImage?:string
     userId:string
     userMail:string
     userName:string
