@@ -15,18 +15,15 @@ interface Props {
 
 export const Header2 = (props: Props) => {
     const {userInfo} = useSelector((state: RootState) => state.user);
-    console.log("userInfo.userImage")
-    console.log(userInfo.userImage)
     return (
         <SafeAreaView style={{
             flexDirection: 'row',
             height: 100, backgroundColor: '#E67402', borderBottomStartRadius: 10, borderBottomEndRadius: 10,
             alignSelf: 'center', borderBottomWidth: 0.5, shadowRadius: 1
         }}>
-
             {props.noBack == true ?
                 <TouchableOpacity onPress={props.settingsNavigation} style={{alignItems:'center',paddingLeft: 8,flexDirection:'row'}}>
-                   <Image source={{uri:userInfo.userImage}} style={{width:42,height:42,borderRadius:42}}/>
+                        <Image source={userInfo.userImage?{uri:userInfo.userImage}:require('../../assets/icons/noImage.png')} style={{width:42,height:42,borderRadius:42,borderWidth:0.5,borderColor:'grey'}}/>
                     <View style={{padding:8}}>
                         <Text style={{color: 'white',opacity:0.8,fontWeight:'bold'}}>{userInfo.userName}</Text>
                         <Text style={{color: 'white',opacity:0.8}}>Seni zayıflamış gördüm</Text>
