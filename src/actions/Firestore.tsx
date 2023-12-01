@@ -37,3 +37,14 @@ export const updateUser=async(userId:string,data:object)=>{
     const response=await firestore().collection("users").doc(userId).update(data)
     return data
 }
+export const addComment=async(dietId:string,userId:string,comment:string,userImage:string,userName:string)=>{
+    console.log("----")
+    console.log(dietId)
+    console.log(userId)
+    console.log(comment)
+    console.log(userImage)
+    console.log(userName)
+
+    const response=await firestore().collection("dietLists").doc(dietId).collection("comments").add({name:"asdasad"})
+
+}

@@ -39,9 +39,7 @@ export const AddDietScreen = () => {
             datas.disadvantage,
             userInfo)
             .then((x) => {
-                console.log("x get data")
-                console.log(x)
-                //navigation.navigate("Home")
+                navigation.navigate("Home")
             })
             .catch(() => Alert.alert("Boş alanları doldurunuz"))
     };

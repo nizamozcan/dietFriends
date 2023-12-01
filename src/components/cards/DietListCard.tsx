@@ -1,9 +1,9 @@
-import {Image, StyleSheet, Text, View} from "react-native";
+import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import React from "react";
 import {IGetHomeData} from "../../interfaces/HomeData";
 import {AirbnbRating} from "react-native-ratings";
 
-export const DietListCard = ({data}: { data: IGetHomeData }) => {
+export const DietListCard = ({data,detail}: { data: IGetHomeData,detail?:boolean }) => {
 
     return (
         <View style={styles.container}>
@@ -14,21 +14,24 @@ export const DietListCard = ({data}: { data: IGetHomeData }) => {
             </View>
 
            <View style={styles.commentView}>
+                   <Text style={{fontWeight:'bold',fontSize:20,textAlign:'center'}}>
+                       {data?.name}
+                   </Text>
                <View>
                    <Text style={{fontWeight:'bold'}}>Diyet Detayı</Text>
-                   <Text numberOfLines={1}>{data?.value}</Text>
+                   <Text numberOfLines={detail==true?0:1}>{data?.value}</Text>
                </View>
                <View>
                    <Text style={{fontWeight:'bold'}}>Bu Diyetin Artı Yönleri</Text>
-                   <Text numberOfLines={1}>{data?.positiveComment}</Text>
+                   <Text numberOfLines={detail==true?0:1}>{data?.positiveComment}</Text>
                </View>
                <View>
                    <Text style={{fontWeight:'bold'}}>Bu Diyetin Eksi Yönleri</Text>
-                   <Text numberOfLines={1}>{data?.disadvantage}</Text>
+                   <Text numberOfLines={detail==true?0:1}>{data?.disadvantage}</Text>
                </View>
                <View>
                    <Text style={{fontWeight:'bold'}}>Kaç Gün Uyguladım</Text>
-                   <Text numberOfLines={1}>{data?.day} gün</Text>
+                   <Text numberOfLines={detail==true?0:1}>{data?.day} gün</Text>
                </View>
                <View>
                    <Text style={{fontWeight:'bold'}}>Diyete Ortalama Yıldızım</Text>
@@ -42,6 +45,7 @@ export const DietListCard = ({data}: { data: IGetHomeData }) => {
                        isDisabled={true}
                    />
                </View>
+               {detail!=true&&(<Text style={{textAlign:'right'}}>6 kere yorum yapıldı</Text>)}
            </View>
         </View>
     )

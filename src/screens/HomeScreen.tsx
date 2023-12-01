@@ -3,7 +3,7 @@ import {StyleSheet, Text, TouchableOpacity, View, FlatList, Image, TextInput} fr
 import {Colors} from "../assets/colors/Colors";
 import database from "@react-native-firebase/database";
 import FormatData from "../Formats/FormatData";
-import {useNavigation} from "@react-navigation/native";
+import {useFocusEffect, useNavigation} from "@react-navigation/native";
 import {MainView} from "../components/cards/MainView";
 import {Animation} from "../components/cards/Animation";
 import {DietListCard} from "../components/cards/DietListCard";
@@ -13,17 +13,19 @@ const HomeScreen = (props) => {
     const navigation = useNavigation();
     const [data, setData] = useState([]);
 
-    useEffect(() => {
-        getData();
-    }, []);
+    useFocusEffect(
+        React.useCallback(() => {
+            getData();
+        }, [])
+    );
     const getData = async () => {
         const firebaseData=await getHomeData()
         setData(firebaseData?._docs)
     };
 
     const renderItem = ({item}:{item:object}) => {
-    return <DietListCard data={item._data}/>
-
+        console.log()
+    return <TouchableOpacity onPress={()=>navigation.navigate("DietDetail",{data:item._data,dietId:item._ref._documentPath._parts[1]})}><DietListCard data={item._data}/></TouchableOpacity>
     };
 
     return (

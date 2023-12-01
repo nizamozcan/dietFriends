@@ -38,10 +38,10 @@ function App(): JSX.Element {
             <Stack.Navigator>
                 <Stack.Screen name="Splash" component={SplashScreen} options={{headerShown: false}}/>
                 <Stack.Screen name="Login" component={LoginScreen} options={{headerShown: false}}/>
+                <Stack.Screen name="DietDetail" component={DietListDetailScreen} options={{headerShown: false}}/>
                 <Stack.Screen name="Register" component={RegisterScreen} options={{headerShown: false}}/>
                 <Stack.Screen name="Home" component={TabNavigator} options={{headerShown: false}}/>
                 <Stack.Screen name={"AddDiet"} component={AddDietScreen} options={{headerShown: false}}/>
-                <Stack.Screen name={"DietDetail"} component={DietListDetailScreen} options={{headerShown: false}}/>
                 <Stack.Screen  name="Setting" component={SettingsScreen} options={{headerShown: false}}/>
             </Stack.Navigator>
         );

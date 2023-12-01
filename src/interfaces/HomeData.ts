@@ -11,8 +11,10 @@ export interface IGetHomeData {
     userInfo:IUsers
 }
 export interface IUserComments{
-    userComment:string
-    userId:string
+    userComment?:string
+    userId?:string
+    userName?:string
+    userImage?:string
 }
 export interface IDate{
     nanoseconds?:string
