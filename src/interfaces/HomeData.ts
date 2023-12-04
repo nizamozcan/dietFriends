@@ -3,7 +3,7 @@ export interface IGetHomeData {
     disadvantage?:string
     createDate?:IDate
     name?:string
-    userComments?:IUserComments[]
+    userComment?:IUserComments[]
     rating?:number
     value?:string
     day?:string
@@ -15,6 +15,7 @@ export interface IUserComments{
     userId?:string
     userName?:string
     userImage?:string
+    replyComment?:IReplyComment[]
 }
 export interface IDate{
     nanoseconds?:string
@@ -27,4 +28,9 @@ export interface IUsers{
     userName:string
     userPassword:string
     userToken:string
+}
+export interface IReplyComment{
+    userImage?:string
+    userName?:string
+    userComment?:string
 }
