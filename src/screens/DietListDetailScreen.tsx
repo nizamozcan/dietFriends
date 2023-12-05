@@ -49,20 +49,28 @@ export const DietListDetailScreen = (props) => {
                             updatedData[index].visible = true;
                             setVisibleData(updatedData);
                         }}>
-                            <Text>{item?.replyComment.length} yorumun tümünü gör</Text>
+                            {visibleData[index].visible==false&& <Text>{item?.replyComment.length} yorumun tümünü gör</Text>}
                         </TouchableOpacity>}
-                    {visibleData[index].visible == true && <ReplyCommentCard data={item?.replyComment}/>}
+                    {visibleData[index].visible == true && <View>
+                        <ReplyCommentCard data={item?.replyComment}/>
+                        <Text onPress={() => {
+                            const updatedData = [...visibleData];
+                            updatedData[index].visible = false;
+                            setVisibleData(updatedData);
+                        }}>Kapat</Text>
+                    </View>}
+
                 </View>
             </View>
         )
     }
     return (
         <MainView title={data.name} bodyStyle={{paddingHorizontal: 8}} onPressHeader={() => navigation.goBack()}>
-            <ScrollView style={{flex:1}}>
-            <DietListCard data={data} detail={true}/>
-            <View style={{flex: 1}}>
-                <FlatList data={commentData} renderItem={({item, index}) => renderCommentData(item, index)}/>
-            </View>
+            <ScrollView style={{flex: 1}}>
+                <DietListCard data={data} detail={true}/>
+                <View style={{flex: 1}}>
+                    <FlatList data={commentData} renderItem={({item, index}) => renderCommentData(item, index)}/>
+                </View>
 
             </ScrollView>
             <View style={{position: 'absolute', bottom: 10, width: '100%', left: 8}}>
