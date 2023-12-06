@@ -1,26 +1,22 @@
 import React, {useState} from "react";
-import {Alert, SafeAreaView, ScrollView, Text, View} from "react-native"
-import Modal from "react-native-modal";
-import {Colors} from "../assets/colors/Colors";
+import {SafeAreaView, ScrollView, Text, View} from "react-native"
 import {CustomInputs} from "../components/inputs/CustomInputs";
 import {CustomButton} from "../components/buttons/CustomButton";
-import auth, {firebase} from "@react-native-firebase/auth";
-import database from "@react-native-firebase/database";
 import {useNavigation} from "@react-navigation/native";
 import {Header2} from "../components/headers/Header2";
 import LottieView from "lottie-react-native";
 import {Split} from "../components/split/Split";
-import {isNotNull} from "../Formats/isNullHelper";
-import {Animation} from "../components/cards/Animation";
+import {isNotNull} from "../helpers/isNullHelper";
 import {AirbnbRating} from "react-native-ratings";
 import {sendDietList} from "../actions/Firestore";
 import {useDispatch, useSelector} from "react-redux";
+import {customAlert} from "../helpers/Helpers";
 
 export const AddDietScreen = () => {
     const {userInfo} = useSelector(state => state.user)
     const dispatch = useDispatch()
     const navigation = useNavigation();
-    const [rating, setRating] = useState(0)
+    const [rating, setRating] = useState(1)
     const [datas, setData] = useState({
         title: "",
         value: "",
@@ -30,19 +26,32 @@ export const AddDietScreen = () => {
     })
     const sendData = async () => {
 
-       await sendDietList(
-            datas.title,
-            datas.value,
-            datas.day,
-            datas.positiveComment,
-            rating,
-            datas.disadvantage,
-            userInfo)
-            .then((x) => {
-                navigation.navigate("Home")
-            })
-            .catch(() => Alert.alert("Boş alanları doldurunuz"))
-    };
+        if (!isNotNull(datas.title)) {
+            customAlert(false, "Diyet Başlığı Boş Olamaz")
+        } else if (!isNotNull(datas.value)) {
+            customAlert(false, "Diyet Hakkında Kısmını Doldurunuz")
+        } else if (!isNotNull(datas.day)) {
+            customAlert(false, "Diyeti Kaç Gün Uyguladığınızı Yazınız")
+        } else if (!isNotNull(datas.positiveComment)) {
+            customAlert(false, "Diyet Hakkında Olumlu Yorumlarınızı yazınız")
+        } else if (!isNotNull(datas.disadvantage)) {
+            customAlert(false, "Diyet Hakkında Olumsuz Yorumlarınızı Yazınız")
+        } else {
+            sendDietList(
+                datas.title,
+                datas.value,
+                datas.day,
+                datas.positiveComment,
+                rating,
+                datas.disadvantage,
+                userInfo)
+                .then((x) => {
+                    navigation.navigate("Home")
+                })
+                .catch((y) => console.log(y))
+        }
+    }
+
 
     return (
         <SafeAreaView style={{flex: 1}}>

@@ -9,10 +9,8 @@ export const CustomAlerts=(title?:string,body?:string)=>{
         [
             {
                 text: 'Kapat',
-                onPress: () => console.log('Yes Pressed')
             }
         ],
         {cancelable: false},
-        //clicking out side of alert will not cancel
     );
 }

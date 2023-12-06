@@ -12,6 +12,9 @@ import firestore from "@react-native-firebase/firestore";
 import ImagePicker from "react-native-image-crop-picker";
 import storage from '@react-native-firebase/storage';
 import {updateUser} from "../actions/Firestore";
+import {isNotNull} from "../helpers/isNullHelper";
+import {CustomAlerts} from "../components/modals/Alerts";
+import {customAlert} from "../helpers/Helpers";
 
 
 const SettingsScreen = () => {
@@ -32,7 +35,21 @@ const SettingsScreen = () => {
     }, []);
 
     const updateData = async () => {
-        updateUser(userInfo.userId, {name: name, password: password, surname: surname})
+        if(!isNotNull(name))
+        {
+            customAlert(false,"İsim Boş Olamaz")
+        }
+        else if(!isNotNull(surname)){
+            customAlert(false,"Soyisim Boş Olamaz")
+        }
+        else if(!isNotNull(mail)){
+            customAlert(false,"Mail Boş Olamaz")
+        }
+        else if(!isNotNull(password)){
+            customAlert(false,"Şifre Boş Olamaz")
+        }else{
+            updateUser(userInfo.userId, {name: name, password: password, surname: surname}).then(()=>customAlert(true)).catch((x)=>console.log(x))
+        }
     }
     const signOut = async () => {
         dispatch(setUserInfo({userName: "", userSurname: "", userMail: ""}))

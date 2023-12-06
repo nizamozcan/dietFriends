@@ -1,9 +1,7 @@
 import firestore from "@react-native-firebase/firestore";
 import messaging from "@react-native-firebase/messaging";
-import {useNavigation} from "@react-navigation/native";
-import {Alert} from "react-native";
 import {firebase} from "@react-native-firebase/auth";
-import {update} from "@react-native-firebase/database/lib/modular/query";
+import {deleteNullParameters} from "../helpers/Helpers";
 
 export const RegisterUser = async (name: string, surname: string, email: string, password: string) => {
     const token = await messaging().getToken()
@@ -18,7 +16,7 @@ export const RegisterUser = async (name: string, surname: string, email: string,
 export const sendDietList = async (title: string, value: string, day: number, positiveComment: string, rating: number, disadvantage: string, userInfo?: object) => {
     const date = firebase.firestore.Timestamp.fromDate(new Date());
     const formatDate = date.toDate();
-    return await firestore().collection("dietLists").add({
+    const data = {
         positiveComment: positiveComment,
         disadvantage: disadvantage,
         name: title,
@@ -26,8 +24,10 @@ export const sendDietList = async (title: string, value: string, day: number, po
         day: day,
         rating: rating,
         createDate: formatDate,
-        userInfo: userInfo
-    }).then((x) => {
+        userInfo: deleteNullParameters(userInfo)
+    }
+
+    return await firestore().collection("dietLists").add(data).then((x) => {
         return Promise.resolve(x)
     }).catch(() => {
         return Promise.reject()
@@ -39,7 +39,7 @@ export const getHomeData = async () => {
         return data
 }
 export const updateUser = async (userId: string, data: object) => {
-    const response = await firestore().collection("users").doc(userId).update(data)
+    await firestore().collection("users").doc(userId).update(data).then(() => console.log("then")).catch((x) => console.log(x))
     return data
 }
 export const addComment = async (dietId: string, userId: string, comment: string, userImage: string, userName: string) => {
@@ -54,17 +54,26 @@ export const addComment = async (dietId: string, userId: string, comment: string
     })
     return response
 }
-export const replyComment = async (dietId: string,index:string) => {
+export const replyComment = async (dietId: string, index: string) => {
     const response = await firestore().collection("dietLists").doc(dietId).get();
-    let data=response._data
-    const params={
-        "userName":"deneme",
-        "userImage":"denemeımage",
-        "comment":""
+    let data = response._data
+    const params = {
+        "userName": "deneme",
+        "userImage": "denemeımage",
+        "comment": ""
     }
-   // console.log(data.userComment[index].replyComment)
+    // console.log(data.userComment[index].replyComment)
     data.userComment[index].replyComment.push(params)
     console.log(data.userComment[index].replyComment)
-            await firestore().collection("dietLists").doc(dietId).update(data)
-    }
+    await firestore().collection("dietLists").doc(dietId).update(data)
+}
 
+export const addUserTargets = async (nowWeight: number, targetWeight: number, targetDay: number, userId: string) => {
+    const userTarget = {nowWeight: nowWeight, targetWeight: targetWeight, targetDay: targetDay, userId: userId}
+    await firestore().collection("userTargets").add(userTarget)
+}
+export const addDailyWeight = async (dailyWeight:number, userId: string) => {
+    const userTarget = {dailyWeight:dailyWeight, userId: userId}
+   const response= await firestore().collection("userTargets").get()
+
+}

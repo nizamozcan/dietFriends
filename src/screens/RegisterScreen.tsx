@@ -9,6 +9,8 @@ import getAuth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import {registerUser, RegisterUser} from "../actions/Firestore";
 import messaging from "@react-native-firebase/messaging";
+import {isNotNull} from "../helpers/isNullHelper";
+import {customAlert} from "../helpers/Helpers";
 
 
 const RegisterScreen = () => {
@@ -18,15 +20,25 @@ const RegisterScreen = () => {
     const [password, setPassword] = useState("");
     const [isVisibleTxt, setIsVisible] = useState(false);
     const navigation = useNavigation();
-    const register =async() => {
-        const token=await messaging().getToken()
-        await firestore().collection("users").add({
-            email:mail,
-            name:name,
-            password:password,
-            surname:surname,
-            token:token
-        }).then(()=>navigation.navigate("Login")).catch((x)=>console.log(x))
+    const register = async () => {
+        if (!isNotNull(name)) {
+            customAlert(false, "İsim Boş Olamaz")
+        } else if (!isNotNull(surname)) {
+            customAlert(false, "Soyisim Boş Olamaz")
+        } else if (!isNotNull(mail)) {
+            customAlert(false, "Email Boş Olamaz")
+        } else if (!isNotNull(password)) {
+            customAlert(false, "Şifre Boş Olamaz")
+        } else {
+            const token = await messaging().getToken()
+            await firestore().collection("users").add({
+                email: mail,
+                name: name,
+                password: password,
+                surname: surname,
+                token: token
+            }).then(() => navigation.navigate("Login")).catch((x) => console.log(x))
+        }
     };
     return (
         <View style={{margin: 10}}>

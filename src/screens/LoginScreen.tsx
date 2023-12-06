@@ -55,7 +55,7 @@ const LoginScreen = (props) => {
     };
 
     const signUser = async () => {
-        const token = await messaging().getToken();
+      //  const token = await messaging().getToken();
         LoginUserControl(mail, password).then((x) => {
             const userInfo =
                 {
@@ -64,7 +64,7 @@ const LoginScreen = (props) => {
                     mail: x._data.email,
                     password: x._data.password,
                     userId:x._ref._documentPath._parts[1],
-                    token:token
+                   // token:token
                 }
             dispatch(setUserInfo(
                 {
@@ -73,11 +73,11 @@ const LoginScreen = (props) => {
                     userName: x._data.name,
                     userPassword: x._data.password,
                     userId:x._ref._documentPath._parts[1],
-                    userToken:token
+                   // userToken:token
                 }))
             AsyncStorage.setItem("userInfo", JSON.stringify(userInfo))
             navigation.navigate("Home");
-        }).catch((y) => CustomAlerts("Başarısız İşlem", "Mail yada şifrenizi kontrol ediniz."))
+        }).catch((y) =>  CustomAlerts("Başarısız İşlem", "Mail yada şifrenizi kontrol ediniz."))
 
     }
 
