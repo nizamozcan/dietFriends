@@ -12,6 +12,8 @@ type Props = {
   multiline?:boolean,
   disabled?:boolean,
   keyboardType?:string,
+  maxSize?:number
+  secureTextEntry?:boolean
 };
 export const CustomInputs=(props:Props)=>{
   return(
@@ -19,12 +21,14 @@ export const CustomInputs=(props:Props)=>{
          <Text style={{marginBottom:-4,color:'orange'}}>{props.placeholder}</Text>
          <TextInput
              {...props}
+             secureTextEntry={props.secureTextEntry}
              autoCapitalize={"none"}
              placeholder={props.placeholder}
              placeholderTextColor={'grey'}
              style={{...styles.inputStyle, ...props.inputStyle}}
              onChangeText={props.onChange}
              onFocus={props.onFocus}
+             maxLength={props.maxSize}
              keyboardType={props.keyboardType=="number"?'numeric':"default"}
              onBlur={props.onBlur}
              value={props.value}

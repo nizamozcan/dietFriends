@@ -12,13 +12,14 @@ import {Colors} from "../assets/colors/Colors";
 import Modal from "react-native-modal";
 import LottieView from "lottie-react-native";
 import firestore from '@react-native-firebase/firestore';
-import {LoginUserControl} from "../helpers/Helpers";
+import {customAlert, LoginUserControl} from "../helpers/Helpers";
 import {AlertModal} from "../components/modals/AlertModal";
 import {CustomAlerts} from "../components/modals/Alerts";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@reduxjs/toolkit/query";
 import {setUserInfo} from "../redux/Slice";
 import messaging from "@react-native-firebase/messaging";
+import {isNotNull} from "../helpers/isNullHelper";
 
 const LoginScreen = (props) => {
     const dispatch = useDispatch()
@@ -55,29 +56,40 @@ const LoginScreen = (props) => {
     };
 
     const signUser = async () => {
-      //  const token = await messaging().getToken();
-        LoginUserControl(mail, password).then((x) => {
-            const userInfo =
-                {
-                    name: x._data.name,
-                    surname: x._data.surname,
-                    mail: x._data.email,
-                    password: x._data.password,
-                    userId:x._ref._documentPath._parts[1],
-                   // token:token
-                }
-            dispatch(setUserInfo(
-                {
-                    userMail: x._data.email,
-                    userSurname: x._data.surname,
-                    userName: x._data.name,
-                    userPassword: x._data.password,
-                    userId:x._ref._documentPath._parts[1],
-                   // userToken:token
-                }))
-            AsyncStorage.setItem("userInfo", JSON.stringify(userInfo))
-            navigation.navigate("Home");
-        }).catch((y) =>  CustomAlerts("Başarısız İşlem", "Mail yada şifrenizi kontrol ediniz."))
+        if(!isNotNull(mail)){
+            customAlert(false,"Mail Adresinizi Giriniz.")
+        }
+        else if (!isNotNull(password)){
+            customAlert(false,"Şifrenizi  Giriniz.")
+        }
+        else {
+            const token = await messaging().getToken();
+            LoginUserControl(mail, password).then((x) => {
+                const userInfo =
+                    {
+                        name: x._data.name,
+                        surname: x._data.surname,
+                        mail: x._data.email,
+                        password: x._data.password,
+                        userId:x._ref._documentPath._parts[1],
+                        token:token
+                    }
+                console.log("userInfo")
+                console.log(userInfo)
+                dispatch(setUserInfo(
+                    {
+                        userMail: x._data.email,
+                        userSurname: x._data.surname,
+                        userName: x._data.name,
+                        userPassword: x._data.password,
+                        userId:x._ref._documentPath._parts[1],
+                        userToken:token
+                    }))
+                AsyncStorage.setItem("userInfo", JSON.stringify(userInfo))
+                navigation.navigate("Home");
+            }).catch((y) =>  CustomAlerts("Başarısız İşlem", "Mail yada şifrenizi kontrol ediniz."))
+        }
+
 
     }
 
@@ -91,7 +103,7 @@ const LoginScreen = (props) => {
                 <CustomInputs placeholder={"Mail Giriniz"}
                               onChange={(x: any) => setMail(x)}
                               value={mail}/>
-                <CustomInputs placeholder={"Şifre Giriniz"}
+                <CustomInputs secureTextEntry={true} placeholder={"Şifre Giriniz"}
                               onChange={(x: any) => setPassword(x)} value={password}/>
                 <View style={{flexDirection: "row", marginTop: 10}}>
                     <Text style={{alignSelf: "center", color: "black"}}>Beni Hatırla</Text>

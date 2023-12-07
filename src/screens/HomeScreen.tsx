@@ -24,7 +24,6 @@ const HomeScreen = (props) => {
     };
 
     const renderItem = ({item}:{item:object}) => {
-        console.log()
     return <TouchableOpacity onPress={()=>navigation.navigate("DietDetail",{data:item._data,dietId:item._ref._documentPath._parts[1]})}><DietListCard data={item._data}/></TouchableOpacity>
     };
 
@@ -34,9 +33,9 @@ const HomeScreen = (props) => {
             <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate("AddDiet")}><Text
                 style={{
                     fontSize: 40,
-                    fontWeight: "300",
+                    fontWeight: "500",
                     alignSelf: "center",
-                    color: "white"
+                    color: "orange"
                 }}>+</Text></TouchableOpacity>
         </MainView>
     );
@@ -47,7 +46,8 @@ const styles = StyleSheet.create({
         position: "absolute",
         right: 10,
         bottom: 10,
-        backgroundColor: 'grey',
+        borderWidth:3,
+        borderColor:'orange',
         width: 75,
         height: 75,
         justifyContent: "center",

@@ -26,6 +26,7 @@ import {store} from "./src/redux/Store";
 import {SplashScreen} from "./src/screens/SplashScreen";
 import {PermissionsAndroid} from 'react-native';
 import messaging from '@react-native-firebase/messaging';
+import {WeightTrackingScreen} from "./src/screens/WeightTrackingScreen";
 import {CalorieTrackingScreen} from "./src/screens/CalorieTrackingScreen";
 
 function App(): JSX.Element {
@@ -53,19 +54,20 @@ function App(): JSX.Element {
                 <Tab.Screen name="Ana Sayfa" component={HomeScreen}   options={{
                     headerShown: false,
                     tabBarIcon: ({ color, size }) => (
-                        <Icon name="settings" size={size} color={"white"} /> // İkonu burada ekleyin
+                        <Icon name="home-sharp" size={size} color={"white"} /> // İkonu burada ekleyin
                     ),
                 }}/>
-                <Tab.Screen name="Diyet Listem" component={MyDietListScreen}   options={{
+
+                <Tab.Screen name="Kilo Takip" component={WeightTrackingScreen} options={{
                     headerShown: false,
                     tabBarIcon: ({ color, size }) => (
-                        <Icon name="list-outline" size={size} color={"white"} /> // İkonu burada ekleyin
+                        <Icon name="stats-chart" size={size} color={"white"} /> // İkonu burada ekleyin
                     ),
                 }}/>
-                <Tab.Screen name="Kalori Takip" component={CalorieTrackingScreen}   options={{
+                <Tab.Screen name="Kalori Takip" component={CalorieTrackingScreen} options={{
                     headerShown: false,
                     tabBarIcon: ({ color, size }) => (
-                        <Icon name="list-outline" size={size} color={"white"} /> // İkonu burada ekleyin
+                        <Icon name="restaurant" size={size} color={"white"} /> // İkonu burada ekleyin
                     ),
                 }}/>
             </Tab.Navigator>

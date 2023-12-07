@@ -1,19 +1,12 @@
-import React, {useEffect, useState} from "react";
-import {Button, FlatList, Image, ScrollView, Text, TextInput, TouchableOpacity, View} from "react-native"
+import React, {useState} from "react";
+import {FlatList, Image, ScrollView, Text, TouchableOpacity, View} from "react-native"
 import {useNavigation} from "@react-navigation/native";
-import {Header} from "../components/headers/Header";
 import {CustomInputs} from "../components/inputs/CustomInputs";
-import auth from "@react-native-firebase/auth";
-import database from "@react-native-firebase/database";
-import FormatData from "../Formats/FormatData";
 import {MainView} from "../components/cards/MainView";
-import {CustomButton} from "../components/buttons/CustomButton";
-import {Animation} from "../components/cards/Animation";
 import {DietListCard} from "../components/cards/DietListCard";
 import {IGetHomeData} from "../interfaces/HomeData";
-import {addComment, replyComment} from "../actions/Firestore";
+import {addComment, getDietListData} from "../actions/Firestore";
 import {useSelector} from "react-redux";
-import Icon from "react-native-vector-icons/Ionicons";
 import {ReplyCommentCard} from "../components/cards/ReplyCommentCard";
 
 
@@ -26,9 +19,6 @@ export const DietListDetailScreen = (props) => {
     const [commentData, setCommentData] = useState(data?.userComment)
     const [visibleReplyComment, setVisibleReplyComment] = useState(false)
     const [visibleData, setVisibleData] = useState([])
-    console.log("userInfo.userName")
-
-    console.log(userInfo)
     const renderCommentData = (item: any, index: number) => {
         const params = {index: index, visible: false}
         visibleData.push(params)
@@ -41,15 +31,16 @@ export const DietListDetailScreen = (props) => {
                         color: 'black',
                         fontWeight: 'bold'
                     }}>{item.userId == userInfo.userId ? "Sen" : item.userName}</Text>
-                    <Text>{item.comment}</Text>
-                    <Text onPress={() => replyComment(dietId, index)}>Yanıtla</Text>
-                    {item?.replyComment.length > 0 &&
+                    <Text style={{color: 'black'}}>{item?.comment}</Text>
+                    {/* <Text style={{color:'black'}} onPress={() => replyComment(dietId, index)}>Yanıtla</Text>*/}
+                    {item?.replyComment?.length > 0 &&
                         <TouchableOpacity onPress={() => {
                             const updatedData = [...visibleData];
                             updatedData[index].visible = true;
                             setVisibleData(updatedData);
                         }}>
-                            {visibleData[index].visible==false&& <Text>{item?.replyComment.length} yorumun tümünü gör</Text>}
+                            {visibleData[index].visible == false &&
+                                <Text>{item?.replyComment.length} yorumun tümünü gör</Text>}
                         </TouchableOpacity>}
                     {visibleData[index].visible == true && <View>
                         <ReplyCommentCard data={item?.replyComment}/>
@@ -64,26 +55,36 @@ export const DietListDetailScreen = (props) => {
             </View>
         )
     }
+    const updateDate = async () => {
+        const data = await getDietListData(dietId)
+        setCommentData(data?._data?.userComment)
+    }
+    const sendComment = async () => {
+        await addComment(dietId, userInfo.userId, comment, data.userInfo.userImage, userInfo.userName)
+        updateDate()
+    }
     return (
         <MainView title={data.name} bodyStyle={{paddingHorizontal: 8}} onPressHeader={() => navigation.goBack()}>
             <ScrollView style={{flex: 1}}>
-                <DietListCard data={data} detail={true}/>
                 <View style={{flex: 1}}>
-                    <FlatList data={commentData} renderItem={({item, index}) => renderCommentData(item, index)}/>
-                </View>
+                    <DietListCard data={data} detail={true}/>
+                    <View style={{flex: 1}}>
+                        <FlatList data={commentData} renderItem={({item, index}) => renderCommentData(item, index)}/>
+                    </View>
 
+
+                </View>
             </ScrollView>
-            <View style={{position: 'absolute', bottom: 10, width: '100%', left: 8}}>
+            <View style={{width: '100%'}}>
                 <CustomInputs placeholder={"Yorum Yaz"} onChange={(item: string) => setComment(item)}/>
                 <TouchableOpacity style={{
-                    backgroundColor: 'blue',
-                    height: 40,
+                    backgroundColor: 'white', borderColor: 'blue', borderWidth: 1,
+                    height: 50,
                     borderRadius: 4,
                     alignItems: 'center',
                     justifyContent: 'center'
-                }}
-                                  onPress={() => addComment(dietId, userInfo.userId, comment, data.userInfo.userImage, userInfo.userName)}>
-                    <Text style={{color: 'white'}}>Yorum Yap</Text>
+                }} onPress={() => sendComment()}>
+                    <Text style={{color: 'blue'}}>Yorum Yap</Text>
                 </TouchableOpacity>
             </View>
         </MainView>

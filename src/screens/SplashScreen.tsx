@@ -19,7 +19,6 @@ export const SplashScreen=()=>{
         const mail=data.mail
         const password=data.password
        LoginUserControl(mail,password).then((x)=>{
-           console.log(x)
            dispatch(setUserInfo(
                {
                    userName: x._data.name,

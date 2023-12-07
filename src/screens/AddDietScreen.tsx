@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import {useState} from "react";
 import {SafeAreaView, ScrollView, Text, View} from "react-native"
 import {CustomInputs} from "../components/inputs/CustomInputs";
 import {CustomButton} from "../components/buttons/CustomButton";
@@ -48,7 +48,7 @@ export const AddDietScreen = () => {
                 .then((x) => {
                     navigation.navigate("Home")
                 })
-                .catch((y) => console.log(y))
+                .catch()
         }
     }
 
@@ -64,9 +64,9 @@ export const AddDietScreen = () => {
                         <Text style={{color: 'orange', fontSize: 20}}>Diyetinizi Diğer Kişiler İle Paylaşın</Text>
                     </View>
                     <Split/>
-                    <CustomInputs placeholder={"Diyetin Adı"}
+                    <CustomInputs maxSize={20} placeholder={"Diyetin Adı"}
                                   onChange={(x: string) => setData((y) => ({...y, title: x}))}/>
-                    <CustomInputs keyboardType={"number"}
+                    <CustomInputs keyboardType={"number"} maxSize={3}
                                   placeholder={"Kaç gün uyguladınız"}
                                   onChange={(x: number) => setData((y) => ({...y, day: x}))}/>
                     <View style={{marginTop: 16}}>
@@ -83,13 +83,13 @@ export const AddDietScreen = () => {
                         />
                     </View>
 
-                    <CustomInputs placeholder={"Diyetinizi Kısaca Açıklayınız"} multiline={true}
+                    <CustomInputs maxSize={125} placeholder={"Diyetinizi Kısaca Açıklayınız"} multiline={true}
                                   inputStyle={{height: 200, textAlignVertical: "top"}}
                                   onChange={(x: string) => setData((y) => ({...y, value: x}))}/>
-                    <CustomInputs placeholder={"Bu Diyet İçin Olumsuz Görüşlerinizi Yazınız"} multiline={true}
+                    <CustomInputs maxSize={125} placeholder={"Bu Diyet İçin Olumsuz Görüşlerinizi Yazınız"} multiline={true}
                                   inputStyle={{height: 200, textAlignVertical: "top"}}
                                   onChange={(x: string) => setData((y) => ({...y, disadvantage: x}))}/>
-                    <CustomInputs placeholder={"Bu Diyet İçin olumlu Görüşlerinizi Yazınız"} multiline={true}
+                    <CustomInputs maxSize={125} placeholder={"Bu Diyet İçin olumlu Görüşlerinizi Yazınız"} multiline={true}
                                   inputStyle={{height: 200, textAlignVertical: "top"}}
                                   onChange={(x: string) => setData((y) => ({...y, positiveComment: x}))}/>
                     <View style={{flexDirection: "row"}}>
